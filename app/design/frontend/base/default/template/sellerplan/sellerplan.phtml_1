@@ -1,0 +1,76 @@
+<button type="button" style="display:none" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+<?php	
+	
+	$collection = Mage::getModel('sellerplan/sellerplan')->getCollection();	
+?>
+<div class="row">
+	
+	<?php foreach ($collection as $item) { $i = $i+1; $item->getTitle(); ?>					
+	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+		<div class="box1">
+			<div class="box-icon">
+				
+				<a href="javascript:void(0)"  onclick ="viewdetail(<?php echo $item->getsellerplan_id(); ?>)" class="image_radius" >
+			<img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'plan/'.$item->getplan_image(); ?>" class="img-responsive" alt="<?php echo $item->getTitle(); ?>">
+				</a>
+			</div>
+			
+		</div>
+	</div>
+	<?php } ?>			
+</div>			
+ 
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" id="model_heading">  
+    </div>
+  </div>
+
+<script>
+function viewdetail(id){
+	jQuery.ajax({ url: '<?php echo $this->getUrl(); ?>sellerplan/index/viewdetail',
+        data:{id:id},
+         type: 'post',
+         success: function(output) {                      
+			jQuery('#model_heading').html(output);			  					  					   
+			jQuery( ".btn-info" ).trigger( "click" );
+		  }
+	});	
+}
+function checklogin(id){
+	jQuery( ".close" ).trigger( "click" );
+	jQuery.ajax({ url: '<?php echo $this->getUrl(); ?>sellerplan/index/checklogin',
+        data:{id:id},
+         type: 'post',
+         success: function(output) {                      		   
+		  jQuery('#model_heading').html(output);	
+			if(output == '1'){
+				jQuery( ".close" ).trigger( "click" ); 
+				window.location.href = '<?php echo $this->getUrl(); ?>sellerplan/index/sellerplanreview/id/'+id;
+			 } 		  
+		  jQuery( ".btn-info" ).trigger( "click" );
+		}
+	});	
+}
+function login_sub(id){	
+				
+		var email = jQuery("#inputEmail").val();
+		var pass = jQuery("#inputPassword").val();
+		
+		jQuery.ajax({ url: '<?php echo $this->getUrl(); ?>sellerplan/index/bidlogin',
+        data:{email:email,pass:pass,id:id},
+         type: 'post',
+         success: function(output) {
+			 if(output == '1'){
+				jQuery( ".close" ).trigger( "click" ); 
+				window.location.href = '<?php echo $this->getUrl(); ?>sellerplan/index/sellerplanreview/id/'+id;
+			 } else if(output == 0){
+					 jQuery('.error_message').html('Your account type is seller. You cannot subscribe for bid plan.');	 					 
+				 } else {
+					jQuery('.error_message').html(output);	 
+				}			
+		}
+	});				
+}
+
+</script>

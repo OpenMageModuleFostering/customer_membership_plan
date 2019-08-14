@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <sellerplan_adminhtml_sellerplan_index>
+        <reference name="content">
+            <block type="sellerplan/adminhtml_sellerplan" name="sellerplan" />
+        </reference>
+    </sellerplan_adminhtml_sellerplan_index>
+	
+	<sellerplan_adminhtml_managecustomer_index>
+        <reference name="content">
+            <block type="sellerplan/adminhtml_managecustomer" name="managecustomer" />
+        </reference>
+    </sellerplan_adminhtml_managecustomer_index>
+	
+	
+	<sellerplan_adminhtml_managetransaction_index>
+        <reference name="content">
+            <block type="sellerplan/adminhtml_managetransaction" name="managetransaction" />
+        </reference>
+    </sellerplan_adminhtml_managetransaction_index>
+	
+</layout>

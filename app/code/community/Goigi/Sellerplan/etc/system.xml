@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <tabs>
+        <goigi translate="label" module="sellerplan">
+            <label>Bidding Settings</label>
+            <sort_order>100</sort_order>
+        </goigi>
+    </tabs>
+    <sections>
+        <goigi translate="label" module="sellerplan">
+            <label>Bid Options</label>
+            <tab>goigi</tab>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+ 
+            <groups>
+                <goigi_group translate="label" module="sellerplan">
+                    <label>Bid Plan Options</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+ 
+                    <fields>
+						<sandbox_status translate="label">
+                            <label>Sandbox Enable: </label>
+                            <comment>sandbox account enable Yes/No </comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </sandbox_status>
+                        <sandbox_email translate="label">
+                            <label>Sandbox Email Address </label>
+                            <comment>sandbox email address</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sandbox_email> 
+                    </fields>
+                </goigi_group>
+				
+				<bidding_contact translate="label" module="sellerplan">
+                    <label>Contact Information</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+ 
+                    <fields>
+						 <email_address translate="label">
+                            <label>Email Address </label>                            
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </email_address>
+                        <email_name translate="label">
+                            <label>Name </label>                            
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </email_name> 
+                    </fields>
+                </bidding_contact>
+				
+				
+				
+            </groups>
+        </goigi>
+    </sections>
+</config>

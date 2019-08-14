@@ -1,0 +1,133 @@
+<style>
+.ajax_loader {
+	display:none;width:69px;height:89px;border:0px solid black;position:absolute;top:50%;left:50%;padding:2px;	
+}
+.col-sm-12.pay_btn {
+    padding-bottom: 40px;
+}
+a#pay_now_btn {
+	width: 100%;
+    border-radius: 4px;
+}
+a.btn.btn-primary.pay_now_back {
+    width: 100%;
+}
+</style>
+<div class="row">
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<?php 
+$id = $this->getRequest()->getParam('id');		
+$data = Mage::getModel('sellerplan/sellerplan')->load($id);
+$vid = $data->getId();
+
+if($vid && Mage::getSingleton('customer/session')->isLoggedIn() ) {
+
+	$_finalPrice = $data->getplan_price();
+	$_price = $data->getoffer_price();
+
+	if(!empty($_price)) {
+		$amount	= trim($data->getoffer_price());
+	} else {
+		$amount	= trim($data->getplan_price());
+	}
+
+	$planname = $data->getplan_title();
+	$desc = substr($data->getplan_desc(),0,200).'...';
+	$planproduct = trim($data->getproduct_num());
+	    	
+	$sandboxstatus = Mage::getStoreConfig('goigi/goigi_group/sandbox_status');	
+?>
+
+ <?php if($sandboxstatus != 0) { $urlfix="sandbox."; }  ?>
+
+ <div class="page-title plan_pay_title">
+        <h1> <i class="fa fa-eye" aria-hidden="true"></i> Plan Review</h1>
+</div>
+<div id="wait" class="ajax_loader">
+	<img src='<?php echo $this->getSkinUrl() ?>esusu/images/demo_wait.gif' width="64" height="64" /><br>Loading..
+</div>
+	
+ <form action="https://www.<?php echo $urlfix ?>paypal.com/webscr" id="paypal_standard_checkout" name="paypal_standard_checkout" method="POST">
+
+	<div class="col-sm-9 plan_first">
+		<div class="col-sm-12">
+			<div class="col-sm-3">
+				<label class="detail_title">Plan Name :</label>
+			</div>
+			<div class="col-sm-1">:</div>
+			<div class="col-sm-8">
+				<span class="detail_des" ><?php echo $planname; ?></span>
+				<input id="planid" name="planid" value="<?php echo $vid; ?>" type="hidden"/>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-sm-3">
+				<label class="detail_title">Membership Duration</label>
+			</div>
+			<div class="col-sm-1">:</div>
+			<div class="col-sm-8">
+				<span class="detail_des"><?php echo $planproduct; ?></span>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-sm-3">
+				<label class="detail_title">Plan Price</label>
+			</div>
+			<div class="col-sm-1">:</div>
+			<div class="col-sm-8">
+				<span class="detail_des"><?php echo " ".Mage::helper('core')->currency($amount); ?></span>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-sm-3">
+				<label class="detail_title">Plan Description</label>
+			</div>
+			<div class="col-sm-1">:</div>
+			<div class="col-sm-8">	
+				<span class="detail_des"><?php echo $desc; ?></span>
+			</div>
+		</div>						
+		<div id="output"></div>		
+	</div>
+	<div class="col-sm-3 rest_area"> 
+		<div class="col-sm-12 pay_btn"> 			
+			<a class="button pay_now_btn" title="Pay"  id="pay_now_btn" >Pay Now</a>
+		</div>
+		<div class="col-sm-12 back_pay"> 
+			<a href="#" class="btn btn-primary pay_now_back" onclick="goBack()">GO back</a>						
+		</div>
+	</div>		
+</form>
+	<?php } else { ?>
+		<div class="col-sm-12 please_select_plan">
+		<div class="alert alert-success fade in" style="margin-top:18px;">		
+			<strong>Warning!</strong> Please check your selected Plan and account type.
+		</div>
+		</div>			
+	<?php } ?>		
+</div>
+<script>
+	function goBack() {
+		window.history.back()
+	}
+    jQuery("#pay_now_btn").click(function(){        		
+		var planid = jQuery('#planid').val();	
+		jQuery("#wait").css("display", "block");		
+		//alert(planid);
+		jQuery.ajax({
+				url: '<?php echo $this->getUrl() ?>sellerplan/index/paynowdata/',
+				type: "POST",				
+				data: { planid: planid },
+			success: function(data) {				
+				if(data == 'false'){
+					jQuery("#wait").css("display", "none");
+					jQuery('#output').html('Please select Bidding Plan');  
+				} else {
+					jQuery("#wait").css("display", "none");
+					jQuery('#output').html(data);  
+					jQuery('#paypal_standard_checkout').submit();					
+				}				
+			},  
+		});
+});
+</script>

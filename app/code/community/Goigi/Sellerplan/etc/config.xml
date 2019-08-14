@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Goigi_Sellerplan>
+            <version>0.1.0</version>
+        </Goigi_Sellerplan>
+    </modules>
+    <frontend>
+        <routers>
+            <sellerplan>
+                <use>standard</use>
+                <args>
+                    <module>Goigi_Sellerplan</module>
+                    <frontName>sellerplan</frontName>
+                </args>
+            </sellerplan>
+        </routers>
+        <layout>
+            <updates>
+                <sellerplan>
+                    <file>sellerplan.xml</file>
+                </sellerplan>
+            </updates>        
+		</layout>				
+    </frontend>
+    <admin>
+        <routers>
+			<sellerplan>
+				<use>admin</use>
+				<args>
+					<module>Goigi_Sellerplan</module>
+					<frontName>sellerplan</frontName>
+				</args>
+			</sellerplan>
+        </routers>
+    </admin>
+    <adminhtml>
+		<menu>
+			<sellerplan module="sellerplan">
+				<title>Bid Plan</title>
+				<sort_order>71</sort_order>               
+				<children>
+					<plan module="sellerplan">
+						<title>Manage Plan</title>
+						<sort_order>0</sort_order>
+						<action>sellerplan/adminhtml_sellerplan</action>
+					</plan>
+					
+					<customer module="sellerplan">
+						<title>Manage Customer</title>
+						<sort_order>1</sort_order>
+						<action>sellerplan/adminhtml_managecustomer</action>
+					</customer>
+					<transaction module="sellerplan">
+						<title>Manage Transaction</title>
+						<sort_order>2</sort_order>
+						<action>sellerplan/adminhtml_managetransaction</action>
+					</transaction>
+					
+				</children>
+			</sellerplan>
+		</menu>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<Goigi_Sellerplan>
+							<title>Sellerplan Module</title>
+							<sort_order>10</sort_order>
+						</Goigi_Sellerplan>
+					</children>
+					<children>
+						<system>
+							<children>
+								<config>
+									<children>
+										<goigi>
+											<title>sellerplan</title>
+										</goigi>
+									</children>
+								</config>
+							</children>
+						</system>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<sellerplan>
+					<file>sellerplan.xml</file>
+				</sellerplan>
+			</updates>
+		</layout>
+    </adminhtml>   
+    <global>
+        <models>
+            <sellerplan>
+                <class>Goigi_Sellerplan_Model</class>
+                <resourceModel>sellerplan_mysql4</resourceModel>
+            </sellerplan>
+            <sellerplan_mysql4>
+                <class>Goigi_Sellerplan_Model_Mysql4</class>
+                <entities>
+                    <sellerplan>
+                        <table>bid_sellerplan</table>
+                    </sellerplan>
+					<managecustomer>
+                        <table>bid_sellercustomerbid</table>
+                    </managecustomer>
+					<managetransaction>
+                        <table>bid_bidplaninvoice</table>
+                    </managetransaction>
+                </entities>
+            </sellerplan_mysql4>
+        </models>
+        <resources>
+            <sellerplan_setup>
+                <setup>
+                    <module>Goigi_Sellerplan</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </sellerplan_setup>
+            <sellerplan_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </sellerplan_write>
+            <sellerplan_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </sellerplan_read>
+        </resources>
+		
+		<template>
+            <email>
+                <bidding_plan_email_template translate="label" module="contacts">
+                    <label>Bidding Plan Success</label>
+                    <file>bidding_email.html</file>
+                    <type>text</type>
+                </bidding_plan_email_template>
+            </email>
+        </template>
+		
+        <blocks>
+            <sellerplan>
+                <class>Goigi_Sellerplan_Block</class>
+            </sellerplan>
+        </blocks>
+        <helpers>
+            <sellerplan>
+                <class>Goigi_Sellerplan_Helper</class>
+            </sellerplan>
+        </helpers>
+    </global>
+</config>

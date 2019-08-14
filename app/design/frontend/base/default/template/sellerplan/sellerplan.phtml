@@ -1,0 +1,111 @@
+<button type="button" style="display:none" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+<?php	
+	
+	$collection = Mage::getModel('sellerplan/sellerplan')->getCollection();
+	$collection->setPageSize(5);
+	$collection->setCurPage(2);
+	$size = $collection->getSize();
+	$cnt = count($collection);
+?>
+<div class="row">
+	<h1 class="page_head">Membership Registration Plan</h1>
+	
+	<?php foreach ($collection as $item) { $i = $i+1; $item->setTitle($i); ?>					
+	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+		<div class="box1">
+			<div class="box-icon">
+				<span class="image_radius"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'plan/'.$item->getplan_image(); ?>" class="img-responsive" alt="Cinque Terre"></span>
+			</div>
+			<div class="info">
+				<h4 class="text-center"><?php echo $item->getplan_title(); ?></h4>
+				<p><?php echo substr($item->getplan_desc(),0,95).'...'; ?></p>
+				<p class="number_product">Membership Duration :- <?php echo $item->getproduct_num(); ?> </p>
+				<?php $_finalPrice = $item->getplan_price(); ?>
+				<?php $_price = $item->getoffer_price(); ?>
+				<p class="Product_price">
+					<?php if(!empty($_finalPrice)) { ?>
+						<span class="old_price">
+							<?php if(!empty($_price)) { ?><del><?php } ?>
+							<?php echo " ".Mage::helper('core')->currency($_finalPrice); ?>
+							<?php if(!empty($_price)) { ?></del><?php } ?>
+						</span>
+					<?php } ?>
+					<?php if(!empty($_price)) { ?>
+						<span class="old_offer_price">
+							<?php echo " ".Mage::helper('core')->currency($_price); ?>							
+						</span>
+					<?php } ?>
+				</p>								
+					<span class="discount_price">
+					<p class="special-price yousave">
+					<?php if(!empty($_price)) { ?>
+					<?php if($_finalPrice > $_price): ?>
+					<?php $_savePercent = round(($_finalPrice - $_price)/100); ?>						
+							<span class="label"><?php echo $this->__('You Save:') ?></span>
+							<span class="price"><?php echo $_savePercent; ?>%</span>						
+					<?php endif; ?>
+					<?php } ?>
+					</p>
+					</span>
+				
+				<a href="javascript:void(0)"  onclick ="viewdetail(<?php echo $item->getsellerplan_id(); ?>)"class="btn btn-primary cu_btn">View Detail</a>
+			</div>
+		</div>
+	</div>
+	<?php } ?>			
+</div>			
+ 
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" id="model_heading">  
+    </div>
+  </div>
+
+<script>
+function viewdetail(id){
+	jQuery.ajax({ url: '<?php echo $this->getUrl(); ?>sellerplan/index/viewdetail',
+        data:{id:id},
+         type: 'post',
+         success: function(output) {                      
+			jQuery('#model_heading').html(output);			  					  					   
+			jQuery( ".btn-info" ).trigger( "click" );
+		  }
+	});	
+}
+function checklogin(id){
+	jQuery( ".close" ).trigger( "click" );
+	jQuery.ajax({ url: '<?php echo $this->getUrl(); ?>sellerplan/index/checklogin',
+        data:{id:id},
+         type: 'post',
+         success: function(output) {                      		   
+		  jQuery('#model_heading').html(output);	
+			if(output == '1'){
+				jQuery( ".close" ).trigger( "click" ); 
+				window.location.href = '<?php echo $this->getUrl(); ?>sellerplan/index/sellerplanreview/id/'+id;
+			 } 		  
+		  jQuery( ".btn-info" ).trigger( "click" );
+		}
+	});	
+}
+function login_sub(id){	
+				
+		var email = jQuery("#inputEmail").val();
+		var pass = jQuery("#inputPassword").val();
+		
+		jQuery.ajax({ url: '<?php echo $this->getUrl(); ?>sellerplan/index/bidlogin',
+        data:{email:email,pass:pass,id:id},
+         type: 'post',
+         success: function(output) {
+			 if(output == '1'){
+				jQuery( ".close" ).trigger( "click" ); 
+				window.location.href = '<?php echo $this->getUrl(); ?>sellerplan/index/sellerplanreview/id/'+id;
+			 } else if(output == 0){
+					 jQuery('.error_message').html('Your account type is seller. You cannot subscribe for bid plan.');	 					 
+				 } else {
+					jQuery('.error_message').html(output);	 
+				}			
+		}
+	});				
+}
+
+</script>

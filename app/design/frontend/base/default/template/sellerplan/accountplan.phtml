@@ -1,0 +1,81 @@
+<?php 
+	$cemail = Mage::getSingleton('customer/session')->getCustomer()->getId();
+	$results = Mage::getModel('sellerplan/managecustomer')->load($cemail,'customeremail');
+	$cid = $results['sellercustomerbid_id'];				
+	if(!empty($cid)){
+	$customerdata = Mage::getModel('sellerplan/managecustomer')->load($cid);
+	$planname = $customerdata->getBidplantype();
+	$planprice = $customerdata->getBidprice();
+	$planproduct = $customerdata->getBidproduct();
+	$availableproduct = $customerdata->getBidavailable();
+?>
+
+<div class="row show-grid plan_heading"> 
+	<div class="col-xs-12 col-md-12 Plan_name_heading">Bid Selected Plan View</div> 
+</div>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="row">
+	<div class="col-xs-12 col-md-12">
+		<div class="col-xs-6 col-md-3 plan_title">Plan Name</div>
+		<div class="col-xs-6 col-md-1">:</div>
+		<div class="col-xs-6 col-md-8 plan_des"><?php echo $planname; ?></div>
+	</div>
+
+	<div class="col-xs-12 col-md-12">
+		<div class="col-xs-6 col-md-3 plan_title">Plan Price</div>
+		<div class="col-xs-6 col-md-1">:</div>
+		<div class="col-xs-6 col-md-8 plan_des"><?php echo " ".Mage::helper('core')->currency($planprice); ?></div>
+	</div>
+
+	<div class="col-xs-12 col-md-12">
+		<div class="col-xs-6 col-md-3 plan_title">Plan Membership Duration</div>
+		<div class="col-xs-6 col-md-1">:</div>
+		<div class="col-xs-6 col-md-8 plan_des"><?php echo $planproduct; ?></div>
+	</div>
+	
+	<div class="clearfix"></div>
+	<hr class="under_line" />
+	<div class="clearfix"></div>
+	
+	<div class="col-xs-12 col-md-12 plan_left_bid">
+		<div class="col-xs-6 col-md-3 plan_title">Available Membership Duration</div>
+		<div class="col-xs-6 col-md-1">:</div>
+		<div class="col-xs-6 col-md-8 plan_des"><?php echo $availableproduct; ?></div>
+	</div>
+	
+	<div class="row show-grid plan_button_account"> 
+		<div class="col-xs-12 col-md-12 Plan_update_plan">
+			<div class="col-xs-6 col-md-6 plan_back">
+				<a href="#" class="btn btn-primary btn_back_plan" onClick="Javascript:history.back();">GO back</a>
+			</div>
+			<div class="col-xs-6 col-md-6 plan_update_forward">
+				<a href="<?php echo $this->getUrl(); ?>sellerplan" class="btn btn-success btn_update" role="button">Update Plan</a>
+			</div>		
+		</div> 
+	</div>	
+	
+</div>
+<?php } else { ?>
+	
+	<div class="row show-grid plan_heading"> 
+		<div class="col-xs-12 col-md-12 Plan_name_heading">Bid Selected Plan View</div> 
+	</div>
+	
+	<div class="row">
+	  
+		<div class="col-xs-12 col-md-12">
+			<div class="col-xs-6 col-md-3 plan_title">No select any plan</div>	
+		</div>
+		
+		<div class="row show-grid plan_button_account"> 
+			<div class="col-xs-12 col-md-12 Plan_update_plan">
+				<div class="col-xs-6 col-md-6 plan_back">
+					<a href="#" class="btn btn-primary btn_back_plan" onClick="Javascript:history.back();">GO back</a>
+				</div>
+				<div class="col-xs-6 col-md-6 plan_update_forward">
+					<a href="<?php echo $this->getUrl(); ?>sellerplan" class="btn btn-success btn_update" role="button">Select Plan</a>
+				</div>		
+			</div> 
+		</div>	
+	</div>	
+<?php } ?>

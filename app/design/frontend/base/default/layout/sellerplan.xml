@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+		<reference name="head">            
+			<action method="addItem"><type>skin_css</type><name>esusu/css/bootstrap.min.css</name></action>
+			<action method="addItem"><type>skin_js</type><name>esusu/js/bootstrap.min.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>esusu/js/jquery.min.js</name></action>
+        </reference>	
+    </default>
+    <sellerplan_index_index>
+		<reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="content">		
+            <block type="sellerplan/sellerplan" name="sellerplan" template="sellerplan/sellerplan.phtml" />
+        </reference>
+    </sellerplan_index_index>
+	
+	<sellerplan_index_review>
+		<reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="content">		
+            <block type="sellerplan/sellerplan" name="sellerplan" template="sellerplan/sellerplanreview.phtml" />
+        </reference>
+    </sellerplan_index_review>
+		
+	<customer_account translate="label">
+		<reference name="customer_account_navigation">
+			<action method="addLink"><name>Bid Plan</name><path>sellerplan/index/accountplan</path><label>Membership Plan</label></action>
+		</reference>
+	</customer_account>
+	
+	<sellerplan_index_account>
+	  <update handle="customer_account"/> <!-- include existing customer account layout -->
+		<reference name="content">		
+            <block type="sellerplan/sellerplan" name="sellerplan" template="sellerplan/accountplan.phtml" />
+        </reference>
+    </sellerplan_index_account>
+	
+	
+	
+	
+</layout> 

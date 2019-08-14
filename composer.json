@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/customer_membership_plan",
+    "type": "magento-module",
+    "license": "OSL",
+    "homepage": "",
+    "description": "Membership Plan for customer",
+    "authors": [
+    {
+        "name": "Chandan Kumar Singh",
+        "email": "chandankumar8050@gmail.com"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}
